@@ -44,26 +44,29 @@ npm run dev
 
 ## API Endpoints
 
-### Comics
-- `GET /api/comics` - Get all user's comics
-- `POST /api/comics` - Create new comic
+### Comics (no authentication)
+
+- `GET /api/comics` - List all comics
+- `POST /api/comics` - Create comic (AI-generated). Body: `{ title, story, style?, numPanels? }`
 - `GET /api/comics/:id` - Get comic by ID
 - `PATCH /api/comics/:id` - Update comic
 - `DELETE /api/comics/:id` - Delete comic
 
-All endpoints require authentication.
+## AI Provider (Replicate)
+
+Comic generation uses Replicate:
+- **Story → panels**: `meta/meta-llama-3-8b-instruct` (splits story into panel descriptions)
+- **Panel images**: `black-forest-labs/flux-schnell` (FLUX image generation)
+
+Set `REPLICATE_API_TOKEN` in `.env` (get a token at [replicate.com/account](https://replicate.com/account)).
 
 ## Models
 
 ### Comic
 - title: string (required)
 - description: string (optional)
-- panels: array of panel objects
-- author: ObjectId (ref: User)
+- style: string (shounen | shoujo | seinen | chibi | isekai)
+- panels: array of `{ imagePath, caption?, prompt? }`
+- author: ObjectId (optional)
 - isPublic: boolean
 - tags: array of strings
-
-### User
-- email: string (required, unique)
-- password: string (required, hashed)
-- username: string (required, unique)
