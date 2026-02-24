@@ -52,9 +52,10 @@ The app will be available at `http://localhost:5173`
 ## Pages
 
 - `/` - Home page
-- `/comics` - List of user's comics
-- `/comics/create` - Create new comic
+- `/comics` - List of comics
+- `/comics/create` - Create new comic (AI-powered)
 - `/comics/:id` - Comic detail page
+- `/manga-ai` - Manga AI page (UI demo)
 
 ## Tech Stack
 
