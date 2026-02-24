@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        zen: ['"Zen Kaku Gothic New"', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }

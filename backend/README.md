@@ -44,26 +44,39 @@ npm run dev
 
 ## API Endpoints
 
-### Comics
-- `GET /api/comics` - Get all user's comics
-- `POST /api/comics` - Create new comic
+### Comics (no authentication)
+
+- `GET /api/comics` - List all comics
+- `POST /api/comics` - Create comic (AI-generated). Body: `{ title, story, style?, numPanels? }`
 - `GET /api/comics/:id` - Get comic by ID
 - `PATCH /api/comics/:id` - Update comic
 - `DELETE /api/comics/:id` - Delete comic
 
-All endpoints require authentication.
+## AI Provider (Hugging Face)
+
+Comic generation uses Hugging Face Inference Providers:
+<<<<<<< Current (Your changes)
+- **Story → panels**: Chat completions via `router.huggingface.co` (SmolLM2)
+- **Panel images**: `@huggingface/inference` client (FLUX.1-schnell)
+
+Set `HUGGINGFACE_TOKEN` in `.env`. Create a token with "Make calls to Inference Providers" at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens/new?ownUserPermissions=inference.serverless.write&tokenType=fineGrained).
+=======
+- **Story → panels**: Chat (Llama, Qwen, Gemma, or Mistral)
+- **Panel images**: FLUX.1-schnell
+
+**Setup:**
+1. Create a token with "Make calls to Inference Providers" at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens/new?ownUserPermissions=inference.serverless.write&tokenType=fineGrained)
+2. **Enable providers** at [hf.co/settings/inference-providers](https://hf.co/settings/inference-providers) (e.g. Groq for free chat, or HF Inference)
+3. Set `HUGGINGFACE_TOKEN` in `.env`
+>>>>>>> Incoming (Background Agent changes)
 
 ## Models
 
 ### Comic
 - title: string (required)
 - description: string (optional)
-- panels: array of panel objects
-- author: ObjectId (ref: User)
+- style: string (shounen | shoujo | seinen | chibi | isekai)
+- panels: array of `{ imagePath, caption?, prompt? }`
+- author: ObjectId (optional)
 - isPublic: boolean
 - tags: array of strings
-
-### User
-- email: string (required, unique)
-- password: string (required, hashed)
-- username: string (required, unique)
