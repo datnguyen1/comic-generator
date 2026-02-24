@@ -52,13 +52,23 @@ npm run dev
 - `PATCH /api/comics/:id` - Update comic
 - `DELETE /api/comics/:id` - Delete comic
 
-## AI Provider (Replicate)
+## AI Provider (Hugging Face)
 
-Comic generation uses Replicate:
-- **Story → panels**: `meta/meta-llama-3-8b-instruct` (splits story into panel descriptions)
-- **Panel images**: `black-forest-labs/flux-schnell` (FLUX image generation)
+Comic generation uses Hugging Face Inference Providers:
+<<<<<<< Current (Your changes)
+- **Story → panels**: Chat completions via `router.huggingface.co` (SmolLM2)
+- **Panel images**: `@huggingface/inference` client (FLUX.1-schnell)
 
-Set `REPLICATE_API_TOKEN` in `.env` (get a token at [replicate.com/account](https://replicate.com/account)).
+Set `HUGGINGFACE_TOKEN` in `.env`. Create a token with "Make calls to Inference Providers" at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens/new?ownUserPermissions=inference.serverless.write&tokenType=fineGrained).
+=======
+- **Story → panels**: Chat (Llama, Qwen, Gemma, or Mistral)
+- **Panel images**: FLUX.1-schnell
+
+**Setup:**
+1. Create a token with "Make calls to Inference Providers" at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens/new?ownUserPermissions=inference.serverless.write&tokenType=fineGrained)
+2. **Enable providers** at [hf.co/settings/inference-providers](https://hf.co/settings/inference-providers) (e.g. Groq for free chat, or HF Inference)
+3. Set `HUGGINGFACE_TOKEN` in `.env`
+>>>>>>> Incoming (Background Agent changes)
 
 ## Models
 

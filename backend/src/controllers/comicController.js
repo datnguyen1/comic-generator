@@ -4,7 +4,7 @@ import {
   splitStoryIntoPanels,
   generateAllPanelImages,
 } from '../services/aiService.js';
-import { downloadAndSavePanelImage } from '../utils/downloadImage.js';
+import { savePanelImage } from '../utils/downloadImage.js';
 
 /**
  * Create comic. AI flow: send { title, story, style, numPanels }.
@@ -14,8 +14,8 @@ export const createComic = async (req, res, next) => {
   try {
     const { title, story, style, numPanels } = req.body;
 
-    if (!process.env.REPLICATE_API_TOKEN) {
-      throw new AppError('REPLICATE_API_TOKEN is not configured', 500);
+    if (!process.env.HUGGINGFACE_TOKEN) {
+      throw new AppError('HUGGINGFACE_TOKEN is not configured', 500);
     }
     if (!title) {
       throw new AppError('Title is required', 400);
@@ -44,7 +44,7 @@ export const createComic = async (req, res, next) => {
     const panels = [];
     for (let i = 0; i < generated.length; i++) {
       const g = generated[i];
-      const imagePath = await downloadAndSavePanelImage(g.url, comic._id, i);
+      const imagePath = await savePanelImage(g.buffer, comic._id, i);
       panels.push({
         imagePath,
         caption: g.caption || '',
