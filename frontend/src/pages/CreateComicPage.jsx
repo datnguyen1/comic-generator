@@ -50,7 +50,7 @@ export default function CreateComicPage() {
   }
 
   return (
-    <div className="px-4 py-6 sm:px-0">
+    <div className="px-4 py-20 sm:px-0 justify-center items-center flex flex-col">
       <h2 className="text-2xl font-bold text-gray-900 mb-2">Create Comic with AI</h2>
       <p className="text-gray-500 mb-6">
         Describe your story. AI will split it into panels and generate manga-style art.
