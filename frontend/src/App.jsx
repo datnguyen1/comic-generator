@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import ComicsPage from './pages/ComicsPage';
@@ -9,9 +9,10 @@ import MangaAIPage from './pages/MangaAIPage';
 function App() {
   return (
     <Routes>
-      <Route path="/manga-ai" element={<MangaAIPage />} />
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
+        <Route path="guide" element={<MangaAIPage />} />
+        <Route path="manga-ai" element={<Navigate to="/guide" replace />} />
         <Route path="comics" element={<ComicsPage />} />
         <Route path="comics/create" element={<CreateComicPage />} />
         <Route path="comics/:id" element={<ComicDetailPage />} />

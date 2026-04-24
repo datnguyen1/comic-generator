@@ -38,8 +38,12 @@ export const createComic = async (req, res, next) => {
       isPublic: true,
     });
 
-    const panelDescriptions = await splitStoryIntoPanels(story.trim(), n);
-    const generated = await generateAllPanelImages(panelDescriptions, styleKey);
+    const trimmedStory = story.trim();
+    const panelDescriptions = await splitStoryIntoPanels(trimmedStory, n);
+    const generated = await generateAllPanelImages(panelDescriptions, styleKey, {
+      title: title.trim(),
+      story: trimmedStory,
+    });
 
     const panels = [];
     for (let i = 0; i < generated.length; i++) {
