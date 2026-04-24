@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api, uploadsUrl } from '../services/api';
+import PageShell from '../components/PageShell';
 
 export default function ComicsPage() {
   const [comics, setComics] = useState([]);
@@ -20,40 +21,52 @@ export default function ComicsPage() {
       }
     }
     fetchComics();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (loading) {
     return (
-      <div className="px-4 py-6 sm:px-0">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Comics</h2>
-        <div className="flex justify-center py-12">
-          <p className="text-gray-500">Loading…</p>
+      <PageShell
+        eyebrow="Your work"
+        title="Comics"
+        description="All generated comics, newest first in this list."
+      >
+        <div className="flex justify-center py-16 rounded-xl border border-gray-200 bg-white">
+          <p className="text-gray-500 text-sm">Loading…</p>
         </div>
-      </div>
+      </PageShell>
     );
   }
 
   if (error) {
     return (
-      <div className="px-4 py-6 sm:px-0">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Comics</h2>
-        <div className="rounded-lg bg-red-50 p-4 text-red-700">{error}</div>
-      </div>
+      <PageShell eyebrow="Your work" title="Comics" description="Browse everything you have generated.">
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-red-800 text-sm">{error}</div>
+      </PageShell>
     );
   }
 
   return (
-    <div className="px-4 py-6 sm:px-0">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Comics</h2>
+    <PageShell
+      eyebrow="Your work"
+      title="Comics"
+      description="Each card opens the full comic with panels in reading order."
+      actions={
+        <Link
+          to="/comics/create"
+          className="inline-flex items-center px-4 py-2.5 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
+        >
+          New comic
+        </Link>
+      }
+    >
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {comics.length === 0 ? (
-          <div className="col-span-full text-center py-12">
-            <p className="text-gray-500 mb-4">No comics yet.</p>
-            <Link
-              to="/comics/create"
-              className="text-blue-600 hover:text-blue-700 font-medium"
-            >
+          <div className="col-span-full rounded-xl border border-gray-200 bg-white py-16 px-6 text-center shadow-sm">
+            <p className="text-gray-600 mb-4">No comics yet.</p>
+            <Link to="/comics/create" className="text-blue-600 hover:text-blue-700 font-medium text-sm">
               Create your first comic →
             </Link>
           </div>
@@ -62,7 +75,7 @@ export default function ComicsPage() {
             <Link
               key={c._id}
               to={`/comics/${c._id}`}
-              className="group block bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition"
+              className="group block rounded-xl border border-gray-200 bg-white overflow-hidden shadow-sm hover:border-gray-300 hover:shadow-md transition"
             >
               <div className="aspect-[3/4] bg-gray-100 flex items-center justify-center">
                 {c.panels?.[0]?.imagePath ? (
@@ -72,21 +85,23 @@ export default function ComicsPage() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <span className="text-4xl text-gray-400">📖</span>
+                  <span className="text-4xl text-gray-400" aria-hidden>
+                    📖
+                  </span>
                 )}
               </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 truncate">
-                  {c.title}
-                </h3>
+              <div className="p-4 border-t border-gray-100">
+                <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 truncate">{c.title}</h3>
                 <p className="text-sm text-gray-500 mt-1">
-                  {c.style} · {c.panels?.length ?? 0} panels
+                  <span className="capitalize">{c.style}</span>
+                  <span className="mx-1.5 text-gray-300">·</span>
+                  <span>{c.panels?.length ?? 0} panels</span>
                 </p>
               </div>
             </Link>
           ))
         )}
       </div>
-    </div>
+    </PageShell>
   );
 }

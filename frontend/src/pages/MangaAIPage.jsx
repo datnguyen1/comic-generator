@@ -1,8 +1,17 @@
 import { Link } from 'react-router-dom';
 
 const NAV_LINKS = [
-  { label: 'Start Creating', href: '#create' },
-  { label: 'View Examples', href: '#gallery' },
+  { label: 'Start creating', href: '#create' },
+  { label: 'Examples', href: '#gallery' },
+];
+
+const PAGE_OUTLINE = [
+  { label: 'Ways to use the app', href: '#create' },
+  { label: 'Example ideas', href: '#gallery' },
+  { label: 'Styles', href: '#styles' },
+  { label: 'Who it is for', href: '#audience' },
+  { label: 'Highlights', href: '#features' },
+  { label: 'Steps', href: '#steps' },
 ];
 
 const BADGES = [
@@ -21,18 +30,20 @@ const GENRE_CHIPS = [
 
 const CREATION_METHODS = [
   {
-    title: 'Upload Your Characters',
+    title: 'Describe your story',
     description:
-      'Have photos of people or character designs? Upload them and our AI will transform them into manga characters, maintaining their unique features across all panels in authentic manga style.',
-    bullets: ['Perfect for OC manga', 'Manga-style expressions', 'Consistent character design'],
-    cta: 'Upload Characters',
+      'This project generates comics from text: you add a title and a story, pick a style preset and panel count, and the backend splits the text and requests one image per panel.',
+    bullets: ['Works in the Create page today', 'Captions and prompts stored per panel', 'Results depend on the configured image model'],
+    cta: 'Open Create',
+    to: '/comics/create',
   },
   {
-    title: 'Describe Your Story',
+    title: 'Browse finished comics',
     description:
-      "Just type your story or scene descriptions, and AI will generate everything - characters, backgrounds, and action sequences in authentic manga style.",
-    bullets: ['Authentic manga panels', 'AI-designed characters', 'No images needed'],
-    cta: 'Write Your Story',
+      'Every generated comic is listed under Comics with its cover thumbnail, style, and panel count. Open one to read panels in order and inspect captions.',
+    bullets: ['Grid of all your comics', 'Reading order is top to bottom', 'Optional prompt details per panel'],
+    cta: 'Open Comics',
+    to: '/comics',
   },
 ];
 
@@ -118,6 +129,24 @@ export default function MangaAIPage() {
         </div>
       </nav>
 
+      {/* Page outline — quick jumps */}
+      <div className="border-b border-slate-800 bg-slate-900/80 backdrop-blur">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">On this page</p>
+          <nav aria-label="Page sections" className="flex flex-wrap gap-x-4 gap-y-2">
+            {PAGE_OUTLINE.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-sm text-slate-400 hover:text-rose-300 transition border-b border-transparent hover:border-rose-400/60 pb-0.5"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </div>
+
       {/* Hero */}
       <section className="relative overflow-hidden pt-16 pb-24 sm:pt-24 sm:pb-32">
         <div className="absolute inset-0 bg-gradient-to-b from-rose-950/20 via-transparent to-transparent" />
@@ -169,11 +198,11 @@ export default function MangaAIPage() {
       </section>
 
       {/* Two Ways to Create */}
-      <section id="create" className="py-20 border-t border-slate-800">
+      <section id="create" className="py-20 border-t border-slate-800 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-4">Two Ways to Create Your Manga</h2>
+          <h2 className="text-3xl font-bold text-center mb-4">What you can do in this app</h2>
           <p className="text-slate-400 text-center max-w-2xl mx-auto mb-16">
-            Choose the creation method that works best for your manga story
+            The live product is the Create and Comics flows linked below—this page is an overview of the idea and positioning.
           </p>
           <div className="grid md:grid-cols-2 gap-8">
             {CREATION_METHODS.map((m) => (
@@ -182,20 +211,21 @@ export default function MangaAIPage() {
                 className="rounded-2xl border border-slate-800 bg-slate-900/50 p-8 hover:border-slate-700 transition"
               >
                 <h3 className="text-xl font-bold mb-4">{m.title}</h3>
-                <p className="text-slate-400 mb-6">{m.description}</p>
+                <p className="text-slate-400 mb-6 leading-relaxed">{m.description}</p>
                 <ul className="space-y-2 mb-8">
                   {m.bullets.map((b) => (
-                    <li key={b} className="flex items-center gap-2 text-slate-300">
-                      <span className="text-rose-500">•</span> {b}
+                    <li key={b} className="flex items-start gap-2 text-slate-300 text-sm leading-relaxed">
+                      <span className="text-rose-500 shrink-0 mt-0.5">•</span>
+                      <span>{b}</span>
                     </li>
                   ))}
                 </ul>
-                <a
-                  href="#create"
+                <Link
+                  to={m.to}
                   className="inline-block rounded-full bg-rose-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-rose-600 transition"
                 >
                   {m.cta}
-                </a>
+                </Link>
               </div>
             ))}
           </div>
@@ -203,7 +233,7 @@ export default function MangaAIPage() {
       </section>
 
       {/* Gallery */}
-      <section id="gallery" className="py-20 border-t border-slate-800 bg-slate-900/30">
+      <section id="gallery" className="py-20 border-t border-slate-800 bg-slate-900/30 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-4">Manga Created with Manga AI</h2>
           <p className="text-slate-400 text-center mb-12">
@@ -242,7 +272,7 @@ export default function MangaAIPage() {
       </section>
 
       {/* Choose Your Manga Style */}
-      <section className="py-20 border-t border-slate-800">
+      <section id="styles" className="py-20 border-t border-slate-800 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-4">Choose Your Manga Style</h2>
           <p className="text-slate-400 text-center mb-12">
@@ -264,7 +294,7 @@ export default function MangaAIPage() {
       </section>
 
       {/* Perfect For */}
-      <section className="py-20 border-t border-slate-800 bg-slate-900/30">
+      <section id="audience" className="py-20 border-t border-slate-800 bg-slate-900/30 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-4">Perfect For Every Manga Creator</h2>
           <p className="text-slate-400 text-center mb-12">
@@ -285,7 +315,7 @@ export default function MangaAIPage() {
       </section>
 
       {/* Why Choose */}
-      <section className="py-20 border-t border-slate-800">
+      <section id="features" className="py-20 border-t border-slate-800 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-4">Why Choose Manga AI?</h2>
           <p className="text-slate-400 text-center mb-12">
@@ -306,7 +336,7 @@ export default function MangaAIPage() {
       </section>
 
       {/* 4 Steps */}
-      <section className="py-20 border-t border-slate-800 bg-slate-900/30">
+      <section id="steps" className="py-20 border-t border-slate-800 bg-slate-900/30 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-4">Create Your Manga in 4 Simple Steps</h2>
           <p className="text-slate-400 text-center mb-12">
