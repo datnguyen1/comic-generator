@@ -1,59 +1,37 @@
 import { Link } from 'react-router-dom';
-
-const NAV_LINKS = [
-  { label: 'Start creating', href: '#create' },
-  { label: 'Examples', href: '#gallery' },
-];
+import PageShell from '../components/PageShell';
 
 const PAGE_OUTLINE = [
-  { label: 'Ways to use the app', href: '#create' },
-  { label: 'Example ideas', href: '#gallery' },
+  { label: 'What you can do', href: '#create' },
   { label: 'Styles', href: '#styles' },
   { label: 'Who it is for', href: '#audience' },
   { label: 'Highlights', href: '#features' },
   { label: 'Steps', href: '#steps' },
 ];
 
-const BADGES = [
-  'Free Trial',
-  '14 Manga Genres',
-  'HD Export',
-];
-
-const GENRE_CHIPS = [
-  { emoji: '⚔️', label: 'Shounen' },
-  { emoji: '🌸', label: 'Shoujo' },
-  { emoji: '🎭', label: 'Seinen' },
-  { emoji: '✨', label: 'Isekai' },
-  { emoji: '🍥', label: 'Chibi' },
-];
-
 const CREATION_METHODS = [
   {
     title: 'Describe your story',
     description:
-      'This project generates comics from text: you add a title and a story, pick a style preset and panel count, and the backend splits the text and requests one image per panel.',
-    bullets: ['Works in the Create page today', 'Captions and prompts stored per panel', 'Results depend on the configured image model'],
-    cta: 'Open Create',
-    to: '/comics/create',
+      'Add a title and story on the Create page, pick a style preset and panel count. The server splits your text and requests one image per panel via Hugging Face.',
+    bullets: [
+      'Lives in the Create page in this app',
+      'Captions and prompts are stored per panel',
+      'Needs a valid API token and inference access (see backend README)',
+    ],
+    accent: 'from-indigo-500 to-violet-500',
   },
   {
     title: 'Browse finished comics',
     description:
-      'Every generated comic is listed under Comics with its cover thumbnail, style, and panel count. Open one to read panels in order and inspect captions.',
-    bullets: ['Grid of all your comics', 'Reading order is top to bottom', 'Optional prompt details per panel'],
-    cta: 'Open Comics',
-    to: '/comics',
+      'Every comic appears in your library with a thumbnail, style, and panel count. Open one to read top-to-bottom or delete it from the database.',
+    bullets: [
+      'Same navigation bar as the rest of the site',
+      'Optional prompt text per panel',
+      'Delete button removes the comic from the database',
+    ],
+    accent: 'from-rose-500 to-orange-500',
   },
-];
-
-const EXAMPLE_MANGA = [
-  { title: 'Demon Blade Chronicles', genre: 'Shounen Battle', style: 'Shounen', panels: 7 },
-  { title: 'Sakura First Love', genre: 'School Romance', style: 'Shoujo', panels: 4 },
-  { title: 'Tokyo Noir', genre: 'Mystery Thriller', style: 'Seinen', panels: 7 },
-  { title: 'Reborn as a Slime', genre: 'Isekai Fantasy', style: 'Isekai', panels: 6 },
-  { title: 'Café Memories', genre: 'Slice of Life', style: 'Josei', panels: 4 },
-  { title: 'Mecha Genesis', genre: 'Sci-Fi Action', style: 'Mecha', panels: 6 },
 ];
 
 const STYLES = [
@@ -72,351 +50,175 @@ const STYLES = [
 ];
 
 const USE_CASES = [
-  { title: 'Aspiring Mangaka', desc: 'Bring your manga dreams to life without years of art training.' },
-  { title: 'Light Novel Authors', desc: 'Visualize your light novel scenes and create manga adaptations.' },
-  { title: 'Anime Fans', desc: 'Create original manga stories inspired by your favorite genres and styles.' },
-  { title: 'Content Creators', desc: 'Make manga-style content for social media and YouTube.' },
+  { title: 'Aspiring storytellers', desc: 'Prototype a short comic from prose without drawing each frame by hand.' },
+  { title: 'Writers', desc: 'Visualize a scene or chapter as sequential panels.' },
+  { title: 'Fans of manga aesthetics', desc: 'Experiment with shounen, shoujo, and other style prompts.' },
+  { title: 'Builders', desc: 'Fork the repo and swap in a stronger image or chat model.' },
 ];
 
 const FEATURES = [
-  { title: 'Authentic Manga AI', desc: 'AI trained on manga art to create authentic Japanese-style illustrations.' },
-  { title: 'Character Consistency', desc: 'Characters maintain their unique design across all panels and pages.' },
-  { title: 'Panel Layouts', desc: 'Traditional manga panel layouts and compositions.' },
-  { title: 'Speed Lines & Effects', desc: 'Automatic manga effects like speed lines, screen tones, and SFX.' },
+  { title: 'Panel split + images', desc: 'One story becomes N panel descriptions, then N generated images.' },
+  { title: 'Style keywords', desc: 'Presets add manga-style direction to every image prompt.' },
+  { title: 'Library view', desc: 'Grid of comics with quick metadata, a detail reader, and delete.' },
+  { title: 'Open stack', desc: 'React UI, Express API, MongoDB, Hugging Face Inference.' },
 ];
 
 const STEPS = [
-  { n: 1, title: 'Choose Input', desc: 'Upload character designs or describe your story in text.' },
-  { n: 2, title: 'Select Manga Style', desc: 'Pick from shounen, shoujo, seinen, and more authentic styles.' },
-  { n: 3, title: 'Customize Panels', desc: 'Choose panel layouts and manga-specific effects.' },
-  { n: 4, title: 'Download & Share', desc: 'Get high-resolution manga pages ready for publishing.' },
-];
-
-const STATS = [
-  { value: 'Worldwide', label: 'Manga Created' },
-  { value: '12 Styles', label: 'Available' },
-  { value: '60-90 sec', label: 'Generation Time' },
+  { n: 1, title: 'Write', desc: 'Title and story on the Create page.' },
+  { n: 2, title: 'Configure', desc: 'Style preset and number of panels (2–8).' },
+  { n: 3, title: 'Generate', desc: 'Server calls Hugging Face; can take a minute.' },
+  { n: 4, title: 'Read', desc: 'Open the comic from your library to see panels in order.' },
 ];
 
 export default function MangaAIPage() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-zen">
-      {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link to="/manga-ai" className="text-xl font-bold tracking-tight">
-              Manga AI
-            </Link>
-            <div className="flex items-center gap-4">
-              {NAV_LINKS.map(({ label, href }) => (
-                <a
-                  key={label}
-                  href={href}
-                  className="text-sm text-slate-400 hover:text-white transition"
-                >
-                  {label}
-                </a>
-              ))}
-              <a
-                href="#create"
-                className="rounded-full bg-rose-500 px-4 py-2 text-sm font-medium text-white hover:bg-rose-600 transition"
-              >
-                Try Free — No Payment Required
-              </a>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Page outline — quick jumps */}
-      <div className="border-b border-slate-800 bg-slate-900/80 backdrop-blur">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">On this page</p>
-          <nav aria-label="Page sections" className="flex flex-wrap gap-x-4 gap-y-2">
+    <PageShell
+      eyebrow="Guide"
+      title="Comic generator overview"
+      description="Longer-form context for what this app does and how it fits together. Everything here uses the same header and routes as Home, Create, and Comics."
+      actions={
+        <>
+          <Link
+            to="/comics/create"
+            className="inline-flex items-center px-4 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 shadow-sm"
+          >
+            Create a comic
+          </Link>
+          <Link
+            to="/comics"
+            className="inline-flex items-center px-4 py-2.5 rounded-lg text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
+          >
+            View comics
+          </Link>
+        </>
+      }
+    >
+      <div className="space-y-12 max-w-4xl">
+        <nav
+          aria-label="On this page"
+          className="rounded-xl border border-white/70 bg-white/80 p-4 shadow-sm backdrop-blur"
+        >
+          <p className="text-xs font-semibold uppercase tracking-wider text-indigo-700 mb-3">
+            On this page
+          </p>
+          <div className="flex flex-wrap gap-x-4 gap-y-2">
             {PAGE_OUTLINE.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="text-sm text-slate-400 hover:text-rose-300 transition border-b border-transparent hover:border-rose-400/60 pb-0.5"
+                className="text-sm text-indigo-700 hover:text-indigo-900 border-b border-transparent hover:border-indigo-300 pb-0.5"
               >
                 {item.label}
               </a>
             ))}
-          </nav>
-        </div>
-      </div>
+          </div>
+        </nav>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden pt-16 pb-24 sm:pt-24 sm:pb-32">
-        <div className="absolute inset-0 bg-gradient-to-b from-rose-950/20 via-transparent to-transparent" />
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-rose-400/90 text-sm font-medium uppercase tracking-wider mb-4">
-            Your Story, Illustrated in Manga Style
-          </p>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight max-w-4xl mx-auto leading-tight">
-            Turn Your Ideas Into Authentic Manga — Zero Art Skills Required
-          </h1>
-          <p className="mt-6 text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto">
-            Transform stories into manga pages instantly. Upload character references or describe scenes
-            in text, pick from shounen, shoujo, seinen aesthetics, and let AI craft your vision with
-            authentic Japanese style.
-          </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <a
-              href="#create"
-              className="rounded-full bg-rose-500 px-6 py-3 text-base font-semibold text-white hover:bg-rose-600 transition"
-            >
-              Start Creating
-            </a>
-            <a
-              href="#gallery"
-              className="rounded-full border border-slate-600 px-6 py-3 text-base font-medium text-slate-300 hover:border-slate-500 hover:text-white transition"
-            >
-              View Examples
-            </a>
+        <section className="relative overflow-hidden rounded-2xl border border-white/70 bg-gradient-to-br from-indigo-600 via-violet-600 to-rose-500 p-8 sm:p-10 text-center text-white shadow-lg scroll-mt-28">
+          <div aria-hidden className="absolute -right-24 -top-24 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
+          <div aria-hidden className="absolute -left-16 -bottom-16 h-56 w-56 rounded-full bg-rose-300/20 blur-3xl" />
+          <div className="relative">
+            <p className="text-xs font-semibold uppercase tracking-wider text-white/80 mb-3">
+              Manga-style panels from text
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight max-w-2xl mx-auto leading-snug">
+              Turn a written story into a short comic inside this single app
+            </h2>
+            <p className="mt-4 text-white/90 max-w-xl mx-auto leading-relaxed">
+              The same top navigation everywhere: Home, Comics, Create, and this guide. No separate
+              marketing site—only different pages.
+            </p>
           </div>
-          <div className="mt-12 flex flex-wrap justify-center gap-6 text-slate-500 text-sm">
-            {BADGES.map((b) => (
-              <span key={b} className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-rose-500" />
-                {b}
-              </span>
-            ))}
-          </div>
-          <div className="mt-10 flex flex-wrap justify-center gap-2">
-            {GENRE_CHIPS.map(({ emoji, label }) => (
-              <span
-                key={label}
-                className="rounded-full border border-slate-700 bg-slate-900/50 px-4 py-2 text-sm text-slate-300"
-              >
-                {emoji} {label}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Two Ways to Create */}
-      <section id="create" className="py-20 border-t border-slate-800 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-4">What you can do in this app</h2>
-          <p className="text-slate-400 text-center max-w-2xl mx-auto mb-16">
-            The live product is the Create and Comics flows linked below—this page is an overview of the idea and positioning.
+        <section id="create" className="scroll-mt-28 space-y-6">
+          <h2 className="text-xl font-bold text-gray-900">What you can do in this app</h2>
+          <p className="text-gray-600 leading-relaxed">
+            The running product is the Create and Comics flows—this page only explains them in more
+            detail. Use the buttons in the page header above to jump in.
           </p>
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6">
             {CREATION_METHODS.map((m) => (
               <div
                 key={m.title}
-                className="rounded-2xl border border-slate-800 bg-slate-900/50 p-8 hover:border-slate-700 transition"
+                className="relative overflow-hidden rounded-xl border border-white/70 bg-white p-6 shadow-sm hover:shadow-md transition"
               >
-                <h3 className="text-xl font-bold mb-4">{m.title}</h3>
-                <p className="text-slate-400 mb-6 leading-relaxed">{m.description}</p>
-                <ul className="space-y-2 mb-8">
+                <span aria-hidden className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${m.accent}`} />
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">{m.title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed mb-4">{m.description}</p>
+                <ul className="space-y-2">
                   {m.bullets.map((b) => (
-                    <li key={b} className="flex items-start gap-2 text-slate-300 text-sm leading-relaxed">
-                      <span className="text-rose-500 shrink-0 mt-0.5">•</span>
+                    <li key={b} className="flex items-start gap-2 text-sm text-gray-700 leading-relaxed">
+                      <span className="text-indigo-600 shrink-0 mt-0.5">•</span>
                       <span>{b}</span>
                     </li>
                   ))}
                 </ul>
-                <Link
-                  to={m.to}
-                  className="inline-block rounded-full bg-rose-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-rose-600 transition"
-                >
-                  {m.cta}
-                </Link>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Gallery */}
-      <section id="gallery" className="py-20 border-t border-slate-800 bg-slate-900/30 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-4">Manga Created with Manga AI</h2>
-          <p className="text-slate-400 text-center mb-12">
-            From action-packed shounen to heartfelt shoujo — see what&apos;s possible
+        <section id="styles" className="scroll-mt-28 space-y-6 pt-4 border-t border-white/60">
+          <h2 className="text-xl font-bold text-gray-900">Style presets</h2>
+          <p className="text-gray-600 text-sm">
+            The Create page exposes a subset; extras below are examples of how prompts could be
+            extended in code.
           </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {EXAMPLE_MANGA.map((m) => (
-              <div
-                key={m.title}
-                className="group rounded-2xl border border-slate-800 bg-slate-900/50 overflow-hidden hover:border-slate-600 transition"
-              >
-                <div className="aspect-[3/4] bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
-                  <span className="text-6xl opacity-50 group-hover:opacity-70 transition">📖</span>
-                </div>
-                <div className="p-4">
-                  <h3 className="font-bold text-lg">{m.title}</h3>
-                  <p className="text-slate-500 text-sm">{m.genre}</p>
-                  <div className="mt-2 flex gap-2 text-xs text-slate-400">
-                    <span>{m.style}</span>
-                    <span>•</span>
-                    <span>{m.panels} panels</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-10 text-center">
-            <a
-              href="#gallery"
-              className="text-rose-400 hover:text-rose-300 font-medium"
-            >
-              View Full Manga Gallery →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Choose Your Manga Style */}
-      <section id="styles" className="py-20 border-t border-slate-800 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-4">Choose Your Manga Style</h2>
-          <p className="text-slate-400 text-center mb-12">
-            Authentic manga art styles for every type of story
-          </p>
-          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
             {STYLES.map((s) => (
-              <a
+              <div
                 key={s.label}
-                href="#create"
-                className="flex flex-col items-center rounded-xl border border-slate-800 bg-slate-900/50 p-6 hover:border-rose-500/50 hover:bg-slate-800/50 transition"
+                className="flex flex-col items-center rounded-xl border border-white/70 bg-white p-4 shadow-sm"
               >
-                <span className="text-3xl mb-2">{s.emoji}</span>
-                <span className="text-sm font-medium text-slate-300">{s.label}</span>
-              </a>
+                <span className="text-2xl mb-1" aria-hidden>
+                  {s.emoji}
+                </span>
+                <span className="text-xs font-medium text-gray-800">{s.label}</span>
+              </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Perfect For */}
-      <section id="audience" className="py-20 border-t border-slate-800 bg-slate-900/30 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-4">Perfect For Every Manga Creator</h2>
-          <p className="text-slate-400 text-center mb-12">
-            From aspiring mangaka to seasoned artists — Manga AI empowers everyone
-          </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <section id="audience" className="scroll-mt-28 space-y-6 pt-4 border-t border-white/60">
+          <h2 className="text-xl font-bold text-gray-900">Who it is for</h2>
+          <div className="grid sm:grid-cols-2 gap-4">
             {USE_CASES.map((u) => (
-              <div
-                key={u.title}
-                className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6"
-              >
-                <h3 className="font-bold text-lg mb-2">{u.title}</h3>
-                <p className="text-slate-400 text-sm">{u.desc}</p>
+              <div key={u.title} className="rounded-xl border border-white/70 bg-white p-5 shadow-sm">
+                <h3 className="font-semibold text-gray-900 mb-2">{u.title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{u.desc}</p>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Why Choose */}
-      <section id="features" className="py-20 border-t border-slate-800 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-4">Why Choose Manga AI?</h2>
-          <p className="text-slate-400 text-center mb-12">
-            Professional manga creation made simple
-          </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <section id="features" className="scroll-mt-28 space-y-6 pt-4 border-t border-white/60">
+          <h2 className="text-xl font-bold text-gray-900">What the stack does</h2>
+          <div className="grid sm:grid-cols-2 gap-4">
             {FEATURES.map((f) => (
-              <div
-                key={f.title}
-                className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6"
-              >
-                <h3 className="font-bold text-lg mb-2">{f.title}</h3>
-                <p className="text-slate-400 text-sm">{f.desc}</p>
+              <div key={f.title} className="rounded-xl border border-white/70 bg-white p-5 shadow-sm">
+                <h3 className="font-semibold text-gray-900 mb-2">{f.title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* 4 Steps */}
-      <section id="steps" className="py-20 border-t border-slate-800 bg-slate-900/30 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-4">Create Your Manga in 4 Simple Steps</h2>
-          <p className="text-slate-400 text-center mb-12">
-            Begin with complimentary credits — no payment info needed
-          </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <section id="steps" className="scroll-mt-28 space-y-6 pt-4 border-t border-white/60">
+          <h2 className="text-xl font-bold text-gray-900">Flow in four steps</h2>
+          <ol className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 list-none p-0 m-0">
             {STEPS.map((s) => (
-              <div key={s.n} className="relative">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-rose-500 text-lg font-bold text-white mb-4">
+              <li key={s.n} className="rounded-xl border border-white/70 bg-white p-5 shadow-sm">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 text-sm font-bold text-white shadow mb-3">
                   {s.n}
                 </div>
-                <h3 className="font-bold text-lg mb-2">{s.title}</h3>
-                <p className="text-slate-400 text-sm">{s.desc}</p>
-              </div>
+                <h3 className="font-semibold text-gray-900 mb-1">{s.title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{s.desc}</p>
+              </li>
             ))}
-          </div>
-          <div className="mt-12 text-center">
-            <a
-              href="#create"
-              className="inline-block rounded-full bg-rose-500 px-8 py-4 text-base font-semibold text-white hover:bg-rose-600 transition"
-            >
-              Start Creating Manga Now →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="py-24 border-t border-slate-800">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-rose-400/90 text-sm font-medium uppercase tracking-wider mb-4">
-            Complimentary Credits — No Payment Needed
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-            Ready to Become a Manga Creator?
-          </h2>
-          <p className="text-slate-400 text-lg mb-10">
-            Join the community of storytellers bringing their visions to life. Try free today —
-            artistic talent not required.
-          </p>
-          <div className="flex flex-wrap justify-center gap-8 mb-10 text-center">
-            {STATS.map((s) => (
-              <div key={s.label}>
-                <div className="text-2xl font-bold text-white">{s.value}</div>
-                <div className="text-slate-500 text-sm">{s.label}</div>
-              </div>
-            ))}
-          </div>
-          <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href="#create"
-              className="rounded-full bg-rose-500 px-8 py-4 text-base font-semibold text-white hover:bg-rose-600 transition"
-            >
-              Start Creating Now
-            </a>
-            <a
-              href="#gallery"
-              className="rounded-full border border-slate-600 px-8 py-4 text-base font-medium text-slate-300 hover:border-slate-500 hover:text-white transition"
-            >
-              Browse Gallery
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-12 border-t border-slate-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap justify-center gap-8 text-slate-500 text-sm">
-            <span>Try Before You Buy</span>
-            <span>60-90 Second Generation</span>
-            <span>High-Res Export</span>
-          </div>
-          <div className="mt-6 text-center">
-            <Link to="/" className="text-slate-500 hover:text-slate-400 text-sm">
-              ← Back to Comic Generator
-            </Link>
-          </div>
-        </div>
-      </footer>
-    </div>
+          </ol>
+        </section>
+      </div>
+    </PageShell>
   );
 }

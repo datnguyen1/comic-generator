@@ -9,10 +9,10 @@ export default function SectionBlock({ id, title, description, children, classNa
     <section
       id={id}
       aria-labelledby={title ? headingId : undefined}
-      className={`rounded-xl border border-gray-200 bg-white shadow-sm ${className}`}
+      className={`rounded-xl border border-white/70 bg-white shadow-sm ${className}`}
     >
       {(title || description) && (
-        <div className="border-b border-gray-100 px-5 py-4 sm:px-6">
+        <div className="border-b border-gray-100 px-5 py-4 sm:px-6 bg-gradient-to-r from-indigo-50/60 to-transparent">
           {title ? (
             <h2 id={headingId} className="text-lg font-semibold text-gray-900">
               {title}
